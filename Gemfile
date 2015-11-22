@@ -6,6 +6,7 @@ gem 'spring', :group => :development
 gem 'pg'
 gem 'apartment'
 gem 'devise_token_auth'
+gem 'versionist'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
