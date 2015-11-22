@@ -1,6 +1,15 @@
 Rails.application.routes.draw do
+
+  api_version(module: "V1",
+              header: {
+                name: "Accept",
+                value: "application/vnd.mycompany+json; version=1",
+                defaults: {:format => :json}
+              }) do
+    resources :companies, except: [:new, :edit]
+  end
+
   mount_devise_token_auth_for 'User', at: 'auth'
-  resources :companies, except: [:new, :edit]
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
