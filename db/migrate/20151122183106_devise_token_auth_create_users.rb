@@ -1,9 +1,9 @@
 class DeviseTokenAuthCreateUsers < ActiveRecord::Migration
   def change
-    create_table(:users, id: :uuid) do |t|
+    create_table(:users, id: :uuid, default: 'gen_random_uuid()') do |t|
       ## Required
       t.string :provider, :null => false, :default => "email"
-      t.string :uid, :null => false, :default => ""
+      t.citext :uid, :null => false, :default => ""
 
       ## Database authenticatable
       t.string :encrypted_password, :null => false, :default => ""
@@ -34,19 +34,19 @@ class DeviseTokenAuthCreateUsers < ActiveRecord::Migration
       # t.datetime :locked_at
 
       ## User Info
-      t.string :name
-      t.string :nickname
+      t.citext :username
+      t.citext :email, null: false
+      t.string :full_name
       t.string :image
-      t.string :email
 
       ## Tokens
-      t.json :tokens
+      t.jsonb :tokens
 
       t.timestamps
     end
 
     add_index :users, :email
-    add_index :users, [:uid, :provider],     :unique => true
+    add_index :users, [:uid, :provider, :username, :email], :unique => true
     add_index :users, :reset_password_token, :unique => true
     # add_index :users, :confirmation_token,   :unique => true
     # add_index :users, :unlock_token,         :unique => true

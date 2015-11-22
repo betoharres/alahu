@@ -3,11 +3,14 @@ namespace :db do
   task :extensions => :environment  do
     # Create Schema
     ActiveRecord::Base.connection.execute 'CREATE SCHEMA IF NOT EXISTS shared_extensions;'
-    # Enable Hstore
-    ActiveRecord::Base.connection.execute 'CREATE EXTENSION IF NOT EXISTS HSTORE SCHEMA shared_extensions;'
-    puts "Enabled Hstore"
+    # Enable Unaccent
+    ActiveRecord::Base.connection.execute 'CREATE EXTENSION IF NOT EXISTS "unaccent" SCHEMA shared_extensions;'
+    puts "Enabled UNACCENT"
+    # Enable citext
+    ActiveRecord::Base.connection.execute 'CREATE EXTENSION IF NOT EXISTS "citext" SCHEMA shared_extensions;'
+    puts "Enabled CITEXT"
     # Enable UUID-OSSP
-    ActiveRecord::Base.connection.execute 'CREATE EXTENSION IF NOT EXISTS "uuid-ossp" SCHEMA shared_extensions;'
+    ActiveRecord::Base.connection.execute 'CREATE EXTENSION IF NOT EXISTS "pgcrypto" SCHEMA shared_extensions;'
     puts "Enabled UUID-OSSP"
     # Enable POSTGIS
     ActiveRecord::Base.connection.execute 'CREATE EXTENSION IF NOT EXISTS "postgis" SCHEMA shared_extensions;'

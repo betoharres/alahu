@@ -9,6 +9,7 @@ gem 'devise_token_auth'
 gem 'versionist'
 gem 'omniauth'
 gem 'pry-rails'
+gem 'activerecord-postgis-adapter'
 
 group :development, :test do
     gem 'rspec-rails', '~> 3.0'

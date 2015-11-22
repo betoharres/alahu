@@ -15,27 +15,21 @@ ActiveRecord::Schema.define(version: 20151122183106) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "hstore"
-  enable_extension "uuid-ossp"
   enable_extension "postgis"
+  enable_extension "unaccent"
+  enable_extension "citext"
+  enable_extension "pgcrypto"
 
-  create_table "companies", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "companies", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.string   "name"
     t.string   "subdomain"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "spatial_ref_sys", primary_key: "srid", force: :cascade do |t|
-    t.string  "auth_name", limit: 256
-    t.integer "auth_srid"
-    t.string  "srtext",    limit: 2048
-    t.string  "proj4text", limit: 2048
-  end
-
-  create_table "users", id: :uuid, default: "uuid_generate_v4()", force: :cascade do |t|
+  create_table "users", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.string   "provider",               default: "email", null: false
-    t.string   "uid",                    default: "",      null: false
+    t.citext   "uid",                    default: "",      null: false
     t.string   "encrypted_password",     default: "",      null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
@@ -49,17 +43,17 @@ ActiveRecord::Schema.define(version: 20151122183106) do
     t.datetime "confirmed_at"
     t.datetime "confirmation_sent_at"
     t.string   "unconfirmed_email"
-    t.string   "name"
-    t.string   "nickname"
+    t.citext   "username"
+    t.citext   "email",                                    null: false
+    t.string   "full_name"
     t.string   "image"
-    t.string   "email"
-    t.json     "tokens"
+    t.jsonb    "tokens"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", using: :btree
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
-  add_index "users", ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true, using: :btree
+  add_index "users", ["uid", "provider", "username", "email"], name: "index_users_on_uid_and_provider_and_username_and_email", unique: true, using: :btree
 
 end
