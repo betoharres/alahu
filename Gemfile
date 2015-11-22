@@ -8,6 +8,7 @@ gem 'apartment'
 gem 'devise_token_auth'
 gem 'versionist'
 gem 'omniauth'
+gem 'pry-rails'
 
 group :development, :test do
     gem 'rspec-rails', '~> 3.0'
