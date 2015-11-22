@@ -1,6 +1,6 @@
 class CreateCompanies < ActiveRecord::Migration
   def change
-    create_table :companies do |t|
+    create_table :companies, id: :uuid do |t|
       t.string :name
       t.string :subdomain
 
