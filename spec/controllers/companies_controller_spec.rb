@@ -18,17 +18,17 @@ require 'rails_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-RSpec.describe CompaniesController, type: :controller do
+RSpec.describe V1::CompaniesController, type: :controller do
 
   # This should return the minimal set of attributes required to create a valid
   # Company. As you add validations to Company, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {name: 'TestName', subdomain: 'testname'}
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {name: nil, subdomain: nil}
   }
 
   # This should return the minimal set of values that should be in the session
@@ -80,22 +80,12 @@ RSpec.describe CompaniesController, type: :controller do
         expect(assigns(:company)).to be_a(Company)
         expect(assigns(:company)).to be_persisted
       end
-
-      it "redirects to the created company" do
-        post :create, {:company => valid_attributes}, valid_session
-        expect(response).to redirect_to(Company.last)
-      end
     end
 
     context "with invalid params" do
       it "assigns a newly created but unsaved company as @company" do
         post :create, {:company => invalid_attributes}, valid_session
         expect(assigns(:company)).to be_a_new(Company)
-      end
-
-      it "re-renders the 'new' template" do
-        post :create, {:company => invalid_attributes}, valid_session
-        expect(response).to render_template("new")
       end
     end
   end
@@ -118,12 +108,6 @@ RSpec.describe CompaniesController, type: :controller do
         put :update, {:id => company.to_param, :company => valid_attributes}, valid_session
         expect(assigns(:company)).to eq(company)
       end
-
-      it "redirects to the company" do
-        company = Company.create! valid_attributes
-        put :update, {:id => company.to_param, :company => valid_attributes}, valid_session
-        expect(response).to redirect_to(company)
-      end
     end
 
     context "with invalid params" do
@@ -131,12 +115,6 @@ RSpec.describe CompaniesController, type: :controller do
         company = Company.create! valid_attributes
         put :update, {:id => company.to_param, :company => invalid_attributes}, valid_session
         expect(assigns(:company)).to eq(company)
-      end
-
-      it "re-renders the 'edit' template" do
-        company = Company.create! valid_attributes
-        put :update, {:id => company.to_param, :company => invalid_attributes}, valid_session
-        expect(response).to render_template("edit")
       end
     end
   end
@@ -147,12 +125,6 @@ RSpec.describe CompaniesController, type: :controller do
       expect {
         delete :destroy, {:id => company.to_param}, valid_session
       }.to change(Company, :count).by(-1)
-    end
-
-    it "redirects to the companies list" do
-      company = Company.create! valid_attributes
-      delete :destroy, {:id => company.to_param}, valid_session
-      expect(response).to redirect_to(companies_url)
     end
   end
 
