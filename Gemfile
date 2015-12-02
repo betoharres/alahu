@@ -12,8 +12,10 @@ gem 'pry-rails'
 gem 'activerecord-postgis-adapter'
 
 group :development, :test do
-    gem 'rspec-rails', '~> 3.0'
-    gem 'database_cleaner'
+  gem 'rspec-rails', '~> 3.0'
+  gem 'factory_girl_rails'
+  gem 'database_cleaner'
+  gem 'faker'
 end
 
 # To use ActiveModel has_secure_password
