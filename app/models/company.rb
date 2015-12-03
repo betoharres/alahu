@@ -1,4 +1,7 @@
 class Company < ActiveRecord::Base
+  has_many :users_companies
+  has_many :users, through: :users_companies
+
   after_create :create_tenant
   after_destroy :destroy_tenant
 
