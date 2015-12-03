@@ -1,4 +1,5 @@
 class V1::CompaniesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_company, only: [:show, :update, :destroy]
 
   # GET /companies
@@ -21,6 +22,7 @@ class V1::CompaniesController < ApplicationController
     @company = Company.new(company_params)
 
     if @company.save
+      UserCompany.create user: current_user, company: @company
       render json: @company, status: :created, location: @company
     else
       render json: @company.errors, status: :unprocessable_entity

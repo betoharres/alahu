@@ -20,6 +20,8 @@ require 'rails_helper'
 
 RSpec.describe V1::CompaniesController, type: :controller do
 
+  login_user
+
   # This should return the minimal set of attributes required to create a valid
   # Company. As you add validations to Company, be sure to
   # adjust the attributes here as well.
