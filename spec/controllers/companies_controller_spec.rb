@@ -34,7 +34,7 @@ RSpec.describe V1::CompaniesController, type: :controller do
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # CompaniesController. Be sure to keep this updated too.
-  let(:valid_session) { {} }
+  let(:valid_session) { {'Accept' => 'application/vnd.mycompany+json; version=1'} }
 
   describe "GET #index" do
     it "assigns all companies as @companies" do
