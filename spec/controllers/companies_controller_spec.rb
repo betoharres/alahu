@@ -68,7 +68,7 @@ RSpec.describe V1::CompaniesController, type: :controller do
         expect(assigns(:company)).to be_persisted
       end
 
-      it "assigns a newly created company as @company" do
+      it "checks users relationship with @company" do
         post :create, {:company => valid_attributes}, valid_session
         expect(assigns(:company).users.first).to be_a(User)
       end
