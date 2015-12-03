@@ -1,13 +1,14 @@
 Rails.application.routes.draw do
-
-  resources :roles, except: [:new, :edit]
   api_version(module: "V1",
               header: {
                 name: "Accept",
                 value: "application/vnd.mycompany+json; version=1",
                 defaults: {:format => :json}
               }) do
-    resources :companies, except: [:new, :edit]
+    with_options(except: [:new, :edit]) do |opt|
+      opt.resources :companies
+      opt.resources :roles
+    end
   end
 
   mount_devise_token_auth_for 'User', at: 'auth'

@@ -1,4 +1,5 @@
-class RolesController < ApplicationController
+class V1::RolesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_role, only: [:show, :update, :destroy]
 
   # GET /roles
@@ -19,6 +20,7 @@ class RolesController < ApplicationController
   # POST /roles.json
   def create
     @role = Role.new(role_params)
+    UserRole.create user: current_user, role: @role
 
     if @role.save
       render json: @role, status: :created, location: @role
