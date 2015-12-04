@@ -1,7 +1,7 @@
 FactoryGirl.define do
   factory :role do
-    name "MyString"
-ability 1
+    name Faker::Name.name
+    ability 15
   end
 
 end
