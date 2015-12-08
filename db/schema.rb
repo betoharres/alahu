@@ -35,14 +35,13 @@ ActiveRecord::Schema.define(version: 20151203195718) do
   end
 
   create_table "user_roles", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
-    t.uuid     "user_id"
+    t.citext   "email",      null: false
     t.uuid     "role_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
   add_index "user_roles", ["role_id"], name: "index_user_roles_on_role_id", using: :btree
-  add_index "user_roles", ["user_id"], name: "index_user_roles_on_user_id", using: :btree
 
   create_table "users", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.string   "provider",               default: "email", null: false
@@ -84,7 +83,6 @@ ActiveRecord::Schema.define(version: 20151203195718) do
   add_index "users_companies", ["user_id"], name: "index_users_companies_on_user_id", using: :btree
 
   add_foreign_key "user_roles", "roles"
-  add_foreign_key "user_roles", "users"
   add_foreign_key "users_companies", "companies"
   add_foreign_key "users_companies", "users"
 end
