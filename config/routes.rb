@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :permissions, except: [:new, :edit]
   api_version(module: "V1",
               header: {
                 name: "Accept",
