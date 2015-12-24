@@ -1,5 +1,5 @@
 class Company < ActiveRecord::Base
-  has_many :users_companies
+  has_many :users_companies, dependent: :destroy
   has_many :users, through: :users_companies
 
   after_create :create_tenant, :delete_constraint
@@ -7,6 +7,8 @@ class Company < ActiveRecord::Base
 
   validates_presence_of :name, :subdomain
 
+  # $ psql database_name
+  # \d user_roles
   USER_ROLE_CONSTRAINT = 'fk_rails_318345354e'
 
   def create_tenant

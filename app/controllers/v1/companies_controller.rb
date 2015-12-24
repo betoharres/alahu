@@ -22,7 +22,7 @@ class V1::CompaniesController < ApplicationController
     @company = Company.new(company_params)
 
     if @company.save
-      UserCompany.create user: current_user, company: @company
+      UserCompany.create! user: current_user, company: @company, accepted: true
       render json: @company, status: :created, location: @company
     else
       render json: @company.errors, status: :unprocessable_entity
@@ -32,8 +32,6 @@ class V1::CompaniesController < ApplicationController
   # PATCH/PUT /companies/1
   # PATCH/PUT /companies/1.json
   def update
-    @company = Company.find(params[:id])
-
     if @company.update(company_params)
       head :no_content
     else

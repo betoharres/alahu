@@ -32,8 +32,6 @@ class V1::RolesController < ApplicationController
   # PATCH/PUT /roles/1
   # PATCH/PUT /roles/1.json
   def update
-    @role = Role.find(params[:id])
-
     if @role.update(role_params)
       head :no_content
     else

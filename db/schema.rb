@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151203195718) do
+ActiveRecord::Schema.define(version: 20151217175206) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,11 +27,26 @@ ActiveRecord::Schema.define(version: 20151203195718) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "permissions", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
+    t.integer  "ability",           limit: 2, default: 0
+    t.uuid     "resourceable_id"
+    t.string   "resourceable_type"
+    t.uuid     "role_id"
+    t.datetime "created_at",                              null: false
+    t.datetime "updated_at",                              null: false
+  end
+
+  add_index "permissions", ["resourceable_type", "resourceable_id"], name: "index_permissions_on_resourceable_type_and_resourceable_id", using: :btree
+  add_index "permissions", ["role_id"], name: "index_permissions_on_role_id", using: :btree
+
+  create_table "resources", force: :cascade do |t|
+    t.citext "name"
+  end
+
   create_table "roles", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
-    t.string   "name"
-    t.integer  "ability",    limit: 2
-    t.datetime "created_at",           null: false
-    t.datetime "updated_at",           null: false
+    t.citext   "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_roles", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
@@ -76,13 +91,15 @@ ActiveRecord::Schema.define(version: 20151203195718) do
   create_table "users_companies", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.uuid     "user_id"
     t.uuid     "company_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.boolean  "accepted",   default: false
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
   end
 
   add_index "users_companies", ["company_id"], name: "index_users_companies_on_company_id", using: :btree
   add_index "users_companies", ["user_id"], name: "index_users_companies_on_user_id", using: :btree
 
+  add_foreign_key "permissions", "roles"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
   add_foreign_key "users_companies", "companies"
