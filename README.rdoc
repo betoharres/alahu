@@ -1,28 +1,17 @@
 == README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+* Ruby version: `ruby 2.2.3p173`
 
-Things you may want to cover:
+* System dependencies: Postgres, PostGIS, uuid, citext and unaccent postgres extensions
 
-* Ruby version
+* Database creation: `run rake:db create && rake db:seed`
 
-* System dependencies
+* Database initialization: check the CONSTRAINT name in the user_roles table,
+and paste it in the `USER_ROLE_CONSTRAINT` constant so apartment gem drops it
+after creating new company.
 
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
+* How to run the test suite: `rspec`
 
 * Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
-
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
