@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  resources :permissions, except: [:new, :edit]
   api_version(module: "V1",
               header: {
                 name: "Accept",
@@ -9,10 +8,12 @@ Rails.application.routes.draw do
     with_options(except: [:new, :edit]) do |opt|
       opt.resources :companies
       opt.resources :roles
+      opt.resources :permissions
     end
   end
 
   mount_devise_token_auth_for 'User', at: 'auth'
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

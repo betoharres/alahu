@@ -10,6 +10,7 @@ gem 'versionist'
 gem 'omniauth'
 gem 'pry-rails'
 gem 'activerecord-postgis-adapter'
+gem 'pundit'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0'

@@ -1,10 +1,13 @@
-class PermissionsController < ApplicationController
+class V1::PermissionsController < ApplicationController
   before_action :set_permission, only: [:show, :update, :destroy]
+  before_action :authenticate_user!
+  after_action :verify_authorized
 
   # GET /permissions
   # GET /permissions.json
   def index
     @permissions = Permission.all
+    authorize @permissions
 
     render json: @permissions
   end
@@ -12,6 +15,7 @@ class PermissionsController < ApplicationController
   # GET /permissions/1
   # GET /permissions/1.json
   def show
+    authorize @permission
     render json: @permission
   end
 
@@ -19,6 +23,7 @@ class PermissionsController < ApplicationController
   # POST /permissions.json
   def create
     @permission = Permission.new(permission_params)
+    authorize @permission, :create
 
     if @permission.save
       render json: @permission, status: :created, location: @permission
@@ -30,7 +35,7 @@ class PermissionsController < ApplicationController
   # PATCH/PUT /permissions/1
   # PATCH/PUT /permissions/1.json
   def update
-    @permission = Permission.find(params[:id])
+    authorize @permission, :update
 
     if @permission.update(permission_params)
       head :no_content
@@ -42,6 +47,7 @@ class PermissionsController < ApplicationController
   # DELETE /permissions/1
   # DELETE /permissions/1.json
   def destroy
+    authorize @permission, :destroy
     @permission.destroy
 
     head :no_content
