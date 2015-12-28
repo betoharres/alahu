@@ -1,5 +1,5 @@
-# TODO: deal with association
 class ApplicationPolicy
+# TODO: deal with association
   attr_reader :user, :record, :permissions
 
   def initialize(user, record)
@@ -51,7 +51,7 @@ class ApplicationPolicy
   def check_ability(options = {})
     @permissions.where(resourceable_id: options[:record_id])
                 .pluck(:ability)
-                .bsearch{|ability| ability > options[:minimum] }
+                .bsearch{|ability| ability >= options[:minimum] }
   end
 
   class Scope
