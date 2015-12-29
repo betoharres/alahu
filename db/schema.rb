@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 20151217175206) do
   end
 
   create_table "permissions", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
-    t.integer  "ability",           limit: 2, default: 0
+    t.integer  "ability",           limit: 2, default: 0, null: false
     t.uuid     "resourceable_id"
     t.string   "resourceable_type"
     t.uuid     "role_id"
