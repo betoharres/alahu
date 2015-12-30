@@ -20,12 +20,12 @@ class ApplicationPolicy
       first_check   = check_ability minimum: 1, record_id: record.id
       second_check  = check_ability minimum: 1 unless first_check
 
-      first_check or second_check
+      first_check || second_check
     end
   end
 
   def create?
-    check_ability minimum: 3
+    check_ability minimum: 3 # 3 == READ + WRITE
   end
 
   def new?
@@ -33,7 +33,7 @@ class ApplicationPolicy
   end
 
   def update?
-    check_ability minimum: 5
+    check_ability minimum: 7 # 7 == READ + WRITE + UPDATE
   end
 
   def edit?
@@ -41,7 +41,7 @@ class ApplicationPolicy
   end
 
   def destroy?
-    check_ability minimum: 9
+    check_ability minimum: 15 # 15 == READ + WRITE + UPDATE + DESTROY
   end
 
   def scope
