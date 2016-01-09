@@ -22,12 +22,9 @@ require 'database_cleaner'
 # See http://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 RSpec.configure do |config|
   config.before(:suite) do
-    DatabaseCleaner.start
-    DatabaseCleaner.clean_with(:truncation)
-  end
-
-  config.before(:each) do
     DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+    Rails.application.load_seed
   end
 
   config.before(:each) do
@@ -35,6 +32,10 @@ RSpec.configure do |config|
   end
 
   config.after(:each) do
+    DatabaseCleaner.clean
+  end
+
+  config.after(:suite) do
     DatabaseCleaner.clean
   end
   # rspec-expectations config goes here. You can use an alternate

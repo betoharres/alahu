@@ -2,7 +2,6 @@ require 'rails_helper'
 
 RSpec.describe "Permissions", type: :request do
   before :all do
-    User.delete_all
     @user = FactoryGirl.create(:user_role).user
     Permission.create resourceable_type: 'Permission', ability: 15, role: @user.role
   end

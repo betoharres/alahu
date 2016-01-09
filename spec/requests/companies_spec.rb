@@ -3,8 +3,6 @@ require 'rails_helper'
 RSpec.describe "Companies", type: :request do
 
   before :all do
-    UserRole.delete_all
-    User.delete_all
     @user = FactoryGirl.create(:user)
   end
 
