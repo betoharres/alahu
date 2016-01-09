@@ -1,7 +1,7 @@
 class V1::PermissionsController < ApplicationController
   before_action :set_permission, only: [:show, :update, :destroy]
   before_action :authenticate_user!
-  after_action :verify_authorized
+  # after_action :verify_authorized
 
   # GET /permissions
   # GET /permissions.json

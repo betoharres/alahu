@@ -1,11 +1,13 @@
 class ApplicationPolicy
-# TODO: deal with association
   attr_reader :user, :record, :permissions
 
   def initialize(user, record)
-    unless user then raise Pundit::NotAuthorizedError, "must be logged in" end
+    unless user then raise Pundit::NotAuthorizedError, "must be logged in." end
     @user = user
     @record = record
+    unless user.role && user.role.authorizations
+      raise "User must have a role."
+    end
     model_name = record.class.to_s.gsub(/::.+/, '') # when it's a collection
     @permissions = @user.role.authorizations
                         .where(resourceable_type: model_name)

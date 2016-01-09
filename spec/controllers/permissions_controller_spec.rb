@@ -52,21 +52,6 @@ RSpec.describe V1::PermissionsController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "assigns a new permission as @permission" do
-      get :new, {}, valid_session
-      expect(assigns(:permission)).to be_a_new(Permission)
-    end
-  end
-
-  describe "GET #edit" do
-    it "assigns the requested permission as @permission" do
-      permission = Permission.create! valid_attributes
-      get :edit, {:id => permission.to_param}, valid_session
-      expect(assigns(:permission)).to eq(permission)
-    end
-  end
-
   describe "POST #create" do
     context "with valid params" do
       it "creates a new Permission" do

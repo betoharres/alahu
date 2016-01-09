@@ -5,7 +5,7 @@ class V1::CompaniesController < ApplicationController
   # GET /companies
   # GET /companies.json
   def index
-    @companies = current_user.companies
+    @companies = Company.all
 
     render json: @companies
   end

@@ -52,21 +52,6 @@ RSpec.describe V1::RolesController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "assigns a new role as @role" do
-      get :new, {}, valid_session
-      expect(assigns(:role)).to be_a_new(Role)
-    end
-  end
-
-  describe "GET #edit" do
-    it "assigns the requested role as @role" do
-      role = Role.create! valid_attributes
-      get :edit, {:id => role.to_param}, valid_session
-      expect(assigns(:role)).to eq(role)
-    end
-  end
-
   describe "POST #create" do
     context "with valid params" do
       it "creates a new Role" do
