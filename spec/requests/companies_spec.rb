@@ -18,6 +18,7 @@ RSpec.describe "Companies", type: :request do
       'uid' => @auth_header['uid']
     }
   }
+
   describe "GET /companies" do
     it "works! (now write some real specs)" do
       get companies_path, {}, auth_request_header

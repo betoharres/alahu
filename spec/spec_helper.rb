@@ -27,11 +27,11 @@ RSpec.configure do |config|
     Rails.application.load_seed
   end
 
-  config.before(:each) do
+  config.before(:all) do
     DatabaseCleaner.start
   end
 
-  config.after(:each) do
+  config.after(:all) do
     DatabaseCleaner.clean
   end
 

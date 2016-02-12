@@ -20,6 +20,7 @@ require 'rails_helper'
 
 RSpec.describe V1::CompaniesController, type: :controller do
 
+  create_user_company
   login_user
 
   # This should return the minimal set of attributes required to create a valid
@@ -36,21 +37,26 @@ RSpec.describe V1::CompaniesController, type: :controller do
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # CompaniesController. Be sure to keep this updated too.
-  let(:valid_session) { {'Accept' => 'application/vnd.mycompany+json; version=1'} }
+  # let(:valid_session) {
+  #   {
+  #     'accept' => 'application/vnd.mycompany+json; version=1',
+  #     'access-token' => @auth_header['access-token'],
+  #     'client' => @auth_header['client'],
+  #     'uid' => @auth_header['uid']
+  #   }
+  # }
 
   describe "GET #index" do
     it "assigns all companies as @companies" do
-      company = Company.create! valid_attributes
-      get :index, {}, valid_session
-      expect(assigns(:companies)).to eq([company])
+      get :index
+      expect(assigns(:companies)).to eq([@company])
     end
   end
 
   describe "GET #show" do
     it "assigns the requested company as @company" do
-      company = Company.create! valid_attributes
-      get :show, {:id => company.to_param}, valid_session
-      expect(assigns(:company)).to eq(company)
+      get :show, {:id => @company.to_param}
+      expect(assigns(:company)).to eq(@company)
     end
   end
 
@@ -58,25 +64,25 @@ RSpec.describe V1::CompaniesController, type: :controller do
     context "with valid params" do
       it "creates a new Company" do
         expect {
-          post :create, {:company => valid_attributes}, valid_session
+          post :create, {:company => valid_attributes}
         }.to change(Company, :count).by(1)
       end
 
       it "assigns a newly created company as @company" do
-        post :create, {:company => valid_attributes}, valid_session
+        post :create, {:company => valid_attributes}
         expect(assigns(:company)).to be_a(Company)
         expect(assigns(:company)).to be_persisted
       end
 
       it "checks users relationship with @company" do
-        post :create, {:company => valid_attributes}, valid_session
+        post :create, {:company => valid_attributes}
         expect(assigns(:company).users.first).to be_a(User)
       end
     end
 
     context "with invalid params" do
       it "assigns a newly created but unsaved company as @company" do
-        post :create, {:company => invalid_attributes}, valid_session
+        post :create, {:company => invalid_attributes}
         expect(assigns(:company)).to be_a_new(Company)
       end
     end
@@ -89,33 +95,29 @@ RSpec.describe V1::CompaniesController, type: :controller do
       }
 
       it "updates the requested company" do
-        company = Company.create! valid_attributes
-        put :update, {:id => company.to_param, :company => new_attributes}, valid_session
-        company.reload
-        expect(company.name).to eq(new_attributes[:name])
+        put :update, {:id => @company.to_param, :company => new_attributes}
+        @company.reload
+        expect(@company.name).to eq(new_attributes[:name])
       end
 
       it "assigns the requested company as @company" do
-        company = Company.create! valid_attributes
-        put :update, {:id => company.to_param, :company => valid_attributes}, valid_session
-        expect(assigns(:company)).to eq(company)
+        put :update, {:id => @company.to_param, :company => valid_attributes}
+        expect(assigns(:company)).to eq(@company)
       end
     end
 
     context "with invalid params" do
       it "assigns the company as @company" do
-        company = Company.create! valid_attributes
-        put :update, {:id => company.to_param, :company => invalid_attributes}, valid_session
-        expect(assigns(:company)).to eq(company)
+        put :update, {:id => @company.to_param, :company => invalid_attributes}
+        expect(assigns(:company)).to eq(@company)
       end
     end
   end
 
   describe "DELETE #destroy" do
     it "destroys the requested company" do
-      company = Company.create! valid_attributes
       expect {
-        delete :destroy, {:id => company.to_param}, valid_session
+        delete :destroy, {:id => @company.to_param}
       }.to change(Company, :count).by(-1)
     end
   end
