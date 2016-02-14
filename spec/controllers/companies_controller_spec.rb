@@ -23,6 +23,11 @@ RSpec.describe V1::CompaniesController, type: :controller do
   create_user_company
   login_user
 
+  before :all do
+    Apartment::Tenant.switch!(@company.subdomain)
+    @permission = FactoryGirl.create(:permission, role: @user.role,
+                                     resourceable_id: @user.id)
+  end
   # This should return the minimal set of attributes required to create a valid
   # Company. As you add validations to Company, be sure to
   # adjust the attributes here as well.
@@ -33,18 +38,6 @@ RSpec.describe V1::CompaniesController, type: :controller do
   let(:invalid_attributes) {
     {name: nil, subdomain: nil}
   }
-
-  # This should return the minimal set of values that should be in the session
-  # in order to pass any filters (e.g. authentication) defined in
-  # CompaniesController. Be sure to keep this updated too.
-  # let(:valid_session) {
-  #   {
-  #     'accept' => 'application/vnd.mycompany+json; version=1',
-  #     'access-token' => @auth_header['access-token'],
-  #     'client' => @auth_header['client'],
-  #     'uid' => @auth_header['uid']
-  #   }
-  # }
 
   describe "GET #index" do
     it "assigns all companies as @companies" do

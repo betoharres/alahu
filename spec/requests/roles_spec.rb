@@ -2,7 +2,9 @@ require 'rails_helper'
 
 RSpec.describe "Roles", type: :request do
   before :all do
-    @user = FactoryGirl.create(:user)
+    user_company = FactoryGirl.create(:user_company)
+    @user = user_company.user
+    Apartment::Tenant.switch!(user_company.company.subdomain)
   end
 
   before :each do

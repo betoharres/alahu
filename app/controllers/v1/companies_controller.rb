@@ -1,5 +1,6 @@
 class V1::CompaniesController < ApplicationController
   before_action :authenticate_user!
+  after_action :verify_authorized, except: [:index, :create]
   before_action :set_company, only: [:show, :update, :destroy]
 
   # GET /companies
@@ -13,6 +14,7 @@ class V1::CompaniesController < ApplicationController
   # GET /companies/1
   # GET /companies/1.json
   def show
+    authorize @company
     render json: @company
   end
 
@@ -32,6 +34,7 @@ class V1::CompaniesController < ApplicationController
   # PATCH/PUT /companies/1
   # PATCH/PUT /companies/1.json
   def update
+    authorize @company
     if @company.update(company_params)
       head :no_content
     else
@@ -42,6 +45,7 @@ class V1::CompaniesController < ApplicationController
   # DELETE /companies/1
   # DELETE /companies/1.json
   def destroy
+    authorize @company
     @company.destroy
 
     head :no_content

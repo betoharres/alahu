@@ -23,12 +23,26 @@ RSpec.describe V1::PermissionsController, type: :controller do
   # This should return the minimal set of attributes required to create a valid
   # Permission. As you add validations to Permission, be sure to
   # adjust the attributes here as well.
+  create_user_company
+  login_user
+
+  before :all do
+    Apartment::Tenant.switch!(@company.subdomain)
+    @permission = FactoryGirl.create(:permission, role: @user.role,
+                                     resourceable_id: @user.id)
+  end
+
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {
+     ability: 15,
+     resourceable_type: 'User',
+     resourceable_id: nil,
+     role_id: @user.role.id
+    }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {ability: nil}
   }
 
   # This should return the minimal set of values that should be in the session
@@ -38,17 +52,17 @@ RSpec.describe V1::PermissionsController, type: :controller do
 
   describe "GET #index" do
     it "assigns all permissions as @permissions" do
-      permission = Permission.create! valid_attributes
+      permissions = Permission.all
+      permissions << [@permission]
       get :index, {}, valid_session
-      expect(assigns(:permissions)).to eq([permission])
+      expect(assigns(:permissions)).to eq(permissions)
     end
   end
 
   describe "GET #show" do
     it "assigns the requested permission as @permission" do
-      permission = Permission.create! valid_attributes
-      get :show, {:id => permission.to_param}, valid_session
-      expect(assigns(:permission)).to eq(permission)
+      get :show, {:id => @permission.to_param}, valid_session
+      expect(assigns(:permission)).to eq(@permission)
     end
   end
 
@@ -65,11 +79,6 @@ RSpec.describe V1::PermissionsController, type: :controller do
         expect(assigns(:permission)).to be_a(Permission)
         expect(assigns(:permission)).to be_persisted
       end
-
-      it "redirects to the created permission" do
-        post :create, {:permission => valid_attributes}, valid_session
-        expect(response).to redirect_to(Permission.last)
-      end
     end
 
     context "with invalid params" do
@@ -77,67 +86,40 @@ RSpec.describe V1::PermissionsController, type: :controller do
         post :create, {:permission => invalid_attributes}, valid_session
         expect(assigns(:permission)).to be_a_new(Permission)
       end
-
-      it "re-renders the 'new' template" do
-        post :create, {:permission => invalid_attributes}, valid_session
-        expect(response).to render_template("new")
-      end
     end
   end
 
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {ability: 1}
       }
 
       it "updates the requested permission" do
-        permission = Permission.create! valid_attributes
-        put :update, {:id => permission.to_param, :permission => new_attributes}, valid_session
-        permission.reload
-        skip("Add assertions for updated state")
+        put :update, {:id => @permission.to_param, :permission => new_attributes}, valid_session
+        @permission.reload
+        expect(@permission.ability).to eq(new_attributes[:ability])
       end
 
       it "assigns the requested permission as @permission" do
-        permission = Permission.create! valid_attributes
-        put :update, {:id => permission.to_param, :permission => valid_attributes}, valid_session
-        expect(assigns(:permission)).to eq(permission)
-      end
-
-      it "redirects to the permission" do
-        permission = Permission.create! valid_attributes
-        put :update, {:id => permission.to_param, :permission => valid_attributes}, valid_session
-        expect(response).to redirect_to(permission)
+        put :update, {:id => @permission.to_param, :permission => valid_attributes}, valid_session
+        expect(assigns(:permission)).to eq(@permission)
       end
     end
 
     context "with invalid params" do
       it "assigns the permission as @permission" do
-        permission = Permission.create! valid_attributes
-        put :update, {:id => permission.to_param, :permission => invalid_attributes}, valid_session
-        expect(assigns(:permission)).to eq(permission)
-      end
-
-      it "re-renders the 'edit' template" do
-        permission = Permission.create! valid_attributes
-        put :update, {:id => permission.to_param, :permission => invalid_attributes}, valid_session
-        expect(response).to render_template("edit")
+        put :update, {:id => @permission.to_param, :permission => invalid_attributes}, valid_session
+        expect(assigns(:permission)).to eq(@permission)
       end
     end
   end
 
   describe "DELETE #destroy" do
     it "destroys the requested permission" do
-      permission = Permission.create! valid_attributes
       expect {
-        delete :destroy, {:id => permission.to_param}, valid_session
+        delete :destroy, {:id => @permission.to_param}, valid_session
       }.to change(Permission, :count).by(-1)
-    end
-
-    it "redirects to the permissions list" do
-      permission = Permission.create! valid_attributes
-      delete :destroy, {:id => permission.to_param}, valid_session
-      expect(response).to redirect_to(permissions_url)
     end
   end
 

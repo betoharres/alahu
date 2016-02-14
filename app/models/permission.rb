@@ -3,5 +3,5 @@ class Permission < ActiveRecord::Base
   belongs_to :resourceable, polymorphic: true
   has_many :permissions, as: :resourceable, dependent: :destroy
 
-  validates_presence_of :ability
+  validates_presence_of :ability, :role_id
 end
