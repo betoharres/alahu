@@ -52,10 +52,8 @@ RSpec.describe V1::PermissionsController, type: :controller do
 
   describe "GET #index" do
     it "assigns all permissions as @permissions" do
-      permissions = Permission.all
-      permissions << [@permission]
       get :index, {}, valid_session
-      expect(assigns(:permissions)).to eq(permissions)
+      expect(assigns(:permissions)).to include(@permission)
     end
   end
 
