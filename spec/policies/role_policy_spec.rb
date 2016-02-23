@@ -1,28 +1,37 @@
 require 'rails_helper'
 
-describe RolePolicy do
+describe RolePolicy, type: :policy do
 
-  let(:user) { User.new }
+  create_not_authorized_user
+
+  before :all do
+    Apartment::Tenant.switch!(@company.subdomain)
+    @record = Role.first
+  end
 
   subject { described_class }
 
-  permissions ".scope" do
-    pending "add some examples to (or delete) #{__FILE__}"
-  end
-
   permissions :show? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it 'permits showing role to user' do
+      expect(subject).to permit(@user, @record)
+    end
   end
 
   permissions :create? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it 'denies creating role if user does not have authorization' do
+      expect(subject).not_to permit(@user, @record)
+    end
   end
 
   permissions :update? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it 'denies creating role if user does not have authorization' do
+      expect(subject).not_to permit(@user, @record)
+    end
   end
 
   permissions :destroy? do
-    pending "add some examples to (or delete) #{__FILE__}"
+    it 'denies creating role if user does not have authorization' do
+      expect(subject).not_to permit(@user, @record)
+    end
   end
 end

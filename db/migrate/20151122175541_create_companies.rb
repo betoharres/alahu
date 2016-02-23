@@ -3,6 +3,7 @@ class CreateCompanies < ActiveRecord::Migration
     create_table :companies, id: :uuid, default: 'gen_random_uuid()' do |t|
       t.string :name, null: false
       t.string :subdomain, null: false, unique: true
+      t.boolean :public  , default: true
 
       t.timestamps null: false
     end

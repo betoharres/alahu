@@ -2,7 +2,7 @@ class Company < ActiveRecord::Base
   has_many :users_companies, dependent: :destroy
   has_many :users, through: :users_companies
 
-  after_create :create_tenant, :delete_constraint
+  after_create :create_tenant, :delete_constraint, :create_roles
   after_destroy :destroy_tenant
 
   validates_presence_of :name, :subdomain
@@ -20,6 +20,28 @@ class Company < ActiveRecord::Base
   end
 
   def delete_constraint
-    ActiveRecord::Base.connection.execute("ALTER TABLE #{subdomain}.user_roles DROP CONSTRAINT #{USER_ROLE_CONSTRAINT};")
+    ActiveRecord::Base.connection.execute(
+      "ALTER TABLE #{subdomain}.user_roles DROP CONSTRAINT #{USER_ROLE_CONSTRAINT};"
+    )
+  end
+
+  def create_roles
+    Apartment::Tenant.switch!(subdomain)
+
+    admin = Role.create!(name: 'Admin')
+
+    Resource.all.each do |resource|
+      Permission.create! ability: 15, resourceable_type: resource.name,
+                         role: admin
+    end
+
+    guest = Role.create!(name: 'Guest')
+
+    Resource.all.each do |resource|
+      Permission.create! ability: 1, resourceable_type: resource.name,
+                         role: guest
+    end
+
+    Apartment::Tenant.switch!()
   end
 end

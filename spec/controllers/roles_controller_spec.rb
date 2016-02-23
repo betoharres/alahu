@@ -44,8 +44,10 @@ RSpec.describe V1::RolesController, type: :controller do
 
   describe "GET #index" do
     it "assigns all roles as @roles" do
+      roles = Role.all
+      roles << [@role]
       get :index, {}, valid_session
-      expect(assigns(:roles)).to eq([@role])
+      expect(assigns(:roles)).to eq(roles)
     end
   end
 

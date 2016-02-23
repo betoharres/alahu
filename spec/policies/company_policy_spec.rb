@@ -1,12 +1,13 @@
 require 'rails_helper'
 
-describe PermissionPolicy, type: :policy do
-
-  create_not_authorized_user
+describe CompanyPolicy, type: :policy do
 
   before :all do
+    user_company = FactoryGirl.create(:user_company)
+    @company = user_company.company
+    @user = user_company.user
     Apartment::Tenant.switch!(@company.subdomain)
-    @record = Permission.first
+    @record = @company
   end
 
   subject { described_class }
@@ -17,21 +18,15 @@ describe PermissionPolicy, type: :policy do
     end
   end
 
-  permissions :create? do
-    it 'denies creating permission if user does not have authorization' do
-      expect(subject).not_to permit(@user, @record)
-    end
-  end
-
   permissions :update? do
     it 'denies updating permission if user does not have authorization' do
-      expect(subject).not_to permit(@user, @record)
+      expect(subject).to permit(@user, @record)
     end
   end
 
   permissions :destroy? do
     it 'denies destroying permission if user does not have authorization' do
-      expect(subject).not_to permit(@user, @record)
+      expect(subject).to permit(@user, @record)
     end
   end
 end

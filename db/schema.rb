@@ -21,10 +21,11 @@ ActiveRecord::Schema.define(version: 20151217175206) do
   enable_extension "pgcrypto"
 
   create_table "companies", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
-    t.string   "name",       null: false
-    t.string   "subdomain",  null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.string   "name",                      null: false
+    t.string   "subdomain",                 null: false
+    t.boolean  "public",     default: true
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   create_table "permissions", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
@@ -39,12 +40,12 @@ ActiveRecord::Schema.define(version: 20151217175206) do
   add_index "permissions", ["resourceable_type", "resourceable_id"], name: "index_permissions_on_resourceable_type_and_resourceable_id", using: :btree
   add_index "permissions", ["role_id"], name: "index_permissions_on_role_id", using: :btree
 
-  create_table "resources", force: :cascade do |t|
+  create_table "resources", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.citext "name"
   end
 
   create_table "roles", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
-    t.citext   "name"
+    t.citext   "name",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -91,9 +92,9 @@ ActiveRecord::Schema.define(version: 20151217175206) do
   create_table "users_companies", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.uuid     "user_id"
     t.uuid     "company_id"
-    t.boolean  "accepted",   default: false
-    t.datetime "created_at",                 null: false
-    t.datetime "updated_at",                 null: false
+    t.boolean  "accepted",   default: true
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
   end
 
   add_index "users_companies", ["company_id"], name: "index_users_companies_on_company_id", using: :btree

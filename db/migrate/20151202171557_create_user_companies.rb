@@ -3,7 +3,7 @@ class CreateUserCompanies < ActiveRecord::Migration
     create_table :users_companies, id: :uuid, default: 'gen_random_uuid()' do |t|
       t.references :user    , index: true    , foreign_key: true , type: :uuid
       t.references :company , index: true    , foreign_key: true , type: :uuid
-      t.boolean :accepted   , default: false
+      t.boolean :accepted   , default: true
 
       t.timestamps null: false
     end
