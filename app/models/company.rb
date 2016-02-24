@@ -2,6 +2,7 @@ class Company < ActiveRecord::Base
   has_many :users_companies, dependent: :destroy
   has_many :users, through: :users_companies
 
+  before_save :subdomain_to_downcase
   after_create :create_tenant, :delete_constraint, :create_roles
   after_destroy :destroy_tenant
 
@@ -44,4 +45,9 @@ class Company < ActiveRecord::Base
 
     Apartment::Tenant.switch!()
   end
+
+  def subdomain_to_downcase
+    self.subdomain = self.subdomain.downcase
+  end
+
 end
