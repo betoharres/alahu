@@ -7,8 +7,6 @@ RSpec.describe Role, type: :model do
 
     it "requires presence of role's name" do
       @role.name = nil
-      expect {
-        @role.save
-      }.not_to change{Role.count}
+      expect(@role.save).to be false
     end
 end

@@ -28,21 +28,16 @@ RSpec.describe Company, type: :model do
       @company.subdomain = 'TEST'
       @company.save
       expect(@company.subdomain).not_to match(/[A-Z]+/)
-
     end
 
     it 'requires presence of name' do
       @company.name = nil
-      expect {
-        @company.save
-      }.not_to change{Company.count}
+      expect(@company.save).to be false
     end
 
     it 'requires presence of subdomain' do
       @company.subdomain = nil
-      expect {
-        @company.save
-      }.not_to change{Company.count}
+      expect(@company.save).to be false
     end
 
   end
