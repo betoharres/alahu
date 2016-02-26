@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151217175206) do
+ActiveRecord::Schema.define(version: 20160226020151) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,25 @@ ActiveRecord::Schema.define(version: 20151217175206) do
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
   end
+
+  create_table "gateways", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
+    t.boolean  "authorized",         default: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.string   "provider",           default: "email", null: false
+    t.string   "uid",                default: "",      null: false
+    t.string   "encrypted_password", default: "",      null: false
+    t.integer  "sign_in_count",      default: 0,       null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string   "current_sign_in_ip"
+    t.string   "last_sign_in_ip"
+    t.string   "email"
+    t.text     "tokens"
+  end
+
+  add_index "gateways", ["email"], name: "index_gateways_on_email", using: :btree
+  add_index "gateways", ["uid", "provider"], name: "index_gateways_on_uid_and_provider", unique: true, using: :btree
 
   create_table "permissions", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.integer  "ability",           limit: 2, default: 0, null: false
