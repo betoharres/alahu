@@ -18,7 +18,8 @@ require 'rails_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-RSpec.describe GatewaysController, type: :controller do
+RSpec.describe V1::GatewaysController, type: :controller do
+
   create_user_company
   login_user
 
@@ -31,11 +32,16 @@ RSpec.describe GatewaysController, type: :controller do
   # Gateway. As you add validations to Gateway, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+     {
+     email: 'gateway@test.com', password: 12345678,
+     password_confirmation: 12345678, authorized: false
+    }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {
+     email: nil
+    }
   }
 
   # This should return the minimal set of values that should be in the session
@@ -61,7 +67,7 @@ RSpec.describe GatewaysController, type: :controller do
     context "with valid params" do
       it "creates a new Gateway" do
         expect {
-          post :create, {:gateway => valid_attributes}, valid_session
+          post :create, {:gateway => valid_attributes}
         }.to change(Gateway, :count).by(1)
       end
 
@@ -83,13 +89,13 @@ RSpec.describe GatewaysController, type: :controller do
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {email: 'gatewayupdate@test.com'}
       }
 
       it "updates the requested gateway" do
         put :update, {:id => @gateway.to_param, :gateway => new_attributes}, valid_session
         @gateway.reload
-        skip("Add assertions for updated state")
+        expect(@gateway.email).to eq(new_attributes[:email])
       end
 
       it "assigns the requested gateway as @gateway" do

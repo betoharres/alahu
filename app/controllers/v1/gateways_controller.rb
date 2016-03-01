@@ -61,6 +61,7 @@ class V1::GatewaysController < ApplicationController
     end
 
     def gateway_params
-      params.require(:gateway).permit(:authorized)
+      params.require(:gateway).permit(:email, :password,
+                                      :password_confirmation, :authorized)
     end
 end
