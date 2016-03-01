@@ -14,6 +14,7 @@ Rails.application.routes.draw do
         opt.resources :gateways
       end
     end
+    resources :lamp_stats, except: [:new, :edit, :update]
   end
 
   mount_devise_token_auth_for 'User', at: 'auth'

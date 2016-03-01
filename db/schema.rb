@@ -57,6 +57,42 @@ ActiveRecord::Schema.define(version: 20160427180702) do
   add_index "gateways", ["email"], name: "index_gateways_on_email", using: :btree
   add_index "gateways", ["uid", "provider"], name: "index_gateways_on_uid_and_provider", unique: true, using: :btree
 
+  create_table "lamp_stats", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
+    t.integer  "serial_number",  limit: 8,  null: false
+    t.integer  "sentPkts",       limit: 8
+    t.integer  "rcvPkts",        limit: 8
+    t.integer  "lastReboot",     limit: 8
+    t.integer  "ctrlRestart",    limit: 8
+    t.integer  "rssiDev",        limit: 2
+    t.integer  "lqiDev",         limit: 2
+    t.integer  "correlationDev", limit: 2
+    t.integer  "rssi",           limit: 2
+    t.integer  "lqi",            limit: 2
+    t.integer  "correlation",    limit: 2
+    t.integer  "txPwr",          limit: 2
+    t.integer  "vFirmware",      limit: 2
+    t.integer  "power",          limit: 2
+    t.integer  "sLum"
+    t.integer  "vCmd"
+    t.integer  "cksCfg"
+    t.integer  "appCksErr"
+    t.integer  "cmdNotImp"
+    t.float    "current"
+    t.float    "volt"
+    t.float    "tCom"
+    t.float    "tLed1"
+    t.float    "tLed2"
+    t.boolean  "online"
+    t.boolean  "communicating"
+    t.datetime "date"
+    t.string   "sunrise",        limit: 25
+    t.string   "sunset",         limit: 25
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+  end
+
+  add_index "lamp_stats", ["serial_number"], name: "index_lamp_stats_on_serial_number", using: :btree
+
   create_table "permissions", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.integer  "ability",           limit: 2, default: 0, null: false
     t.uuid     "resourceable_id"
