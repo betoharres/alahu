@@ -18,95 +18,88 @@ require 'rails_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-RSpec.describe V1::RolesController, type: :controller do
+RSpec.describe V1::LampStatsController, type: :controller do
+
   create_user_company
   login_user
 
   before :all do
     Apartment::Tenant.switch!(@company.subdomain)
-    @role = @user.role
+    @lamp_stat = FactoryGirl.create(:lamp_stat)
+    @gateway = FactoryGirl.create(:gateway)
   end
 
   # This should return the minimal set of attributes required to create a valid
-  # Role. As you add validations to Role, be sure to
+  # LampStat. As you add validations to LampStat, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    {name: 'TestRole'}
+    {
+      serial_number: 1
+    }
   }
 
   let(:invalid_attributes) {
-    {name: 'TestRole'}
+    {
+      serial_number: nil
+    }
   }
 
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
-  # RolesController. Be sure to keep this updated too.
+  # LampStatsController. Be sure to keep this updated too.
   let(:valid_session) { {} }
 
   describe "GET #index" do
-    it "assigns all roles as @roles" do
+    it "assigns all lamp_stats as @lamp_stats" do
       get :index, {}, valid_session
-      expect(assigns(:roles)).to include(@role)
+      expect(assigns(:lamp_stats)).to eq([@lamp_stat])
     end
   end
 
   describe "GET #show" do
-    it "assigns the requested role as @role" do
-      get :show, {:id => @role.to_param}, valid_session
-      expect(assigns(:role)).to eq(@role)
+    it "assigns the requested lamp_stat as @lamp_stat" do
+      get :show, {:id => @lamp_stat.to_param}, valid_session
+      expect(assigns(:lamp_stat)).to eq(@lamp_stat)
     end
   end
 
   describe "POST #create" do
-    context "with valid params" do
-      it "creates a new Role" do
-        expect {
-          post :create, {:role => valid_attributes}, valid_session
-        }.to change(Role, :count).by(1)
-      end
 
-      it "assigns a newly created role as @role" do
-        post :create, {:role => valid_attributes}, valid_session
-        expect(assigns(:role)).to be_a(Role)
-        expect(assigns(:role)).to be_persisted
-      end
+    before :each do
+      auth_header = @gateway.create_new_auth_token
+      request.headers['accept'] = auth_header['accept']
+      request.headers['access-token'] = auth_header['access-token']
+      request.headers['client'] = auth_header['client']
+      request.headers['uid'] = auth_header['uid']
     end
-  end
 
-  describe "PUT #update" do
     context "with valid params" do
-      let(:new_attributes) {
-        {name: 'EditTestRole'}
-      }
-
-      it "updates the requested role" do
-        put :update, {:id => @role.to_param, :role => new_attributes}, valid_session
-        @role.reload
-        expect(@role.name).to eq(new_attributes[:name])
+      it "creates a new LampStat" do
+        expect {
+          post :create, {format: :json, :lamp_stat => valid_attributes}, valid_session
+        }.to change(LampStat, :count).by(1)
       end
 
-      it "assigns the requested role as @role" do
-        role = Role.create! valid_attributes
-        put :update, {:id => role.to_param, :role => valid_attributes}, valid_session
-        expect(assigns(:role)).to eq(role)
+      it "assigns a newly created lamp_stat as @lamp_stat" do
+        post :create, {:lamp_stat => valid_attributes}, valid_session
+        expect(assigns(:lamp_stat)).to be_a(LampStat)
+        expect(assigns(:lamp_stat)).to be_persisted
       end
     end
 
     context "with invalid params" do
-      it "assigns the role as @role" do
-        role = Role.create! valid_attributes
-        put :update, {:id => role.to_param, :role => invalid_attributes}, valid_session
-        expect(assigns(:role)).to eq(role)
+      it "assigns a newly created but unsaved lamp_stat as @lamp_stat" do
+        post :create, {:lamp_stat => invalid_attributes}, valid_session
+        expect(assigns(:lamp_stat)).to be_a_new(LampStat)
       end
     end
   end
 
   describe "DELETE #destroy" do
-    it "destroys the requested role" do
-      role = Role.create! valid_attributes
+    it "destroys the requested lamp_stat" do
       expect {
-        delete :destroy, {:id => role.to_param}, valid_session
-      }.to change(Role, :count).by(-1)
+        delete :destroy, {:id => @lamp_stat.to_param}, valid_session
+      }.to change(LampStat, :count).by(-1)
     end
   end
 
