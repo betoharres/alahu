@@ -9,6 +9,7 @@ Rails.application.routes.draw do
       opt.resources :companies
       opt.resources :roles
       opt.resources :permissions
+      resources :firmwares
       as :gateway do
         opt.resources :gateways
       end
