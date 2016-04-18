@@ -10,6 +10,7 @@ Rails.application.routes.draw do
       opt.resources :roles
       opt.resources :permissions
       resources :gateway_roles
+      resources :firmwares
       as :gateway do
         opt.resources :gateways
       end
