@@ -1,7 +1,6 @@
 require 'rails_helper'
 
 RSpec.describe "Firmwares", type: :request do
-
   before :all do
     user_company = FactoryGirl.create(:user_company)
     @user = user_company.user

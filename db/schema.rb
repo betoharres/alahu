@@ -38,6 +38,13 @@ ActiveRecord::Schema.define(version: 20160427180702) do
   add_index "gateway_roles", ["gateway_id"], name: "index_gateway_roles_on_gateway_id", using: :btree
   add_index "gateway_roles", ["role_id"], name: "index_gateway_roles_on_role_id", using: :btree
 
+  create_table "firmwares", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
+    t.string   "name"
+    t.string   "path"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "gateways", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.boolean  "authorized",         default: false
     t.datetime "created_at",                           null: false
