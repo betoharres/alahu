@@ -65,10 +65,10 @@ RSpec.describe V1::FirmwaresController, type: :controller do
       expect(assigns(:firmware)).to eq(@firmware)
     end
 
-    # it "assigns the requested firmware as @firmware" do
-    #   get :show, {:id => @firmware.to_param}, valid_session
-    #   expect(assigns(:firmware)).to eq(@firmware)
-    # end
+    it "assigns the requested firmware as @firmware" do
+      get :show, {:id => @firmware.to_param}, valid_session
+      expect(assigns(:firmware)).to eq(@firmware)
+    end
 
   end
 

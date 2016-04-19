@@ -1,7 +1,9 @@
 class V1::FirmwaresController < ApplicationController
-  before_action :authenticate_gateway!, only:   [:show]
-  before_action :authenticate_user!,    except: [:show]
+
   before_action :set_firmware, only: [:show, :update, :destroy]
+
+  devise_token_auth_group :member, contains: [:user, :gateway]
+  before_action :authenticate_member!
 
   # GET /firmwares
   # GET /firmwares.json
