@@ -10,4 +10,5 @@ RSpec.describe Gateway, type: :model do
     @gateway.email = nil
     expect(@gateway.save).to be false
   end
+
 end
