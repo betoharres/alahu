@@ -1,8 +1,8 @@
 class Role < ActiveRecord::Base
-  has_many :user_role
+  has_many :user_role, dependent: :destroy
   has_many :users, through: :user_role
 
-  has_many :gateway_role
+  has_many :gateway_role, dependent: :destroy
   has_many :gateways, through: :gateway_role
 
   # Fix to resolve conflict with permissions that belongs_to Role and
