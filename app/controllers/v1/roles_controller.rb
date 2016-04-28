@@ -26,7 +26,8 @@ class V1::RolesController < ApplicationController
     authorize @role
 
     if @role.save
-      UserRole.create user: current_user, role: @role
+      # TODO: create a controller to handle User x Role assignment
+      # UserRole.create user: current_user, role: @role
       render json: @role, status: :created, location: @role
     else
       render json: @role.errors, status: :unprocessable_entity

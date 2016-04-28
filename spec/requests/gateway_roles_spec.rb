@@ -1,11 +1,9 @@
 require 'rails_helper'
 
-RSpec.describe "Roles", type: :request do
-
+RSpec.describe "GatewayRoles", type: :request do
   before :all do
-    user_company = FactoryGirl.create(:user_company)
-    @user = user_company.user
-    Apartment::Tenant.switch!(user_company.company.subdomain)
+    @user = FactoryGirl.create(:user_role).user
+    Permission.create resourceable_type: 'Permission', ability: 15, role: @user.role
   end
 
   before :each do
@@ -20,9 +18,10 @@ RSpec.describe "Roles", type: :request do
       'uid' => @auth_header['uid']
     }
   }
-  describe "GET /roles" do
+
+  describe "GET /gateway_roles" do
     it "works! (now write some real specs)" do
-      get roles_path, {}, auth_request_header
+      get gateway_roles_path, {}, auth_request_header
       expect(response).to have_http_status(200)
     end
   end

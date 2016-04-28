@@ -2,9 +2,8 @@ class User < ActiveRecord::Base
   has_many :users_companies
   has_many :companies, through: :users_companies
 
-  has_one :user_role
+  has_one :user_role, dependent: :destroy
   has_one :role, through: :user_role
-  has_one :permission, as: :resourceable, dependent: :destroy
 
   # Include default devise modules.
   devise :database_authenticatable, :registerable,

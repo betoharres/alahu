@@ -43,6 +43,23 @@ class Company < ActiveRecord::Base
                          role: guest
     end
 
+    gateway = Role.create!(name: 'Gateway')
+    gateway_create_whitelist = ['LampStat', 'GatewayStat']
+
+    Resource.all.each do |resource|
+      if gateway_create_whitelist.include?(resource.name)
+        Permission.create! ability: 3, resourceable_type: resource.name,
+                           role: gateway
+      elsif resource.name == 'Task'
+        # can UPDATE
+        Permission.create! ability: 7, resourceable_type: resource.name,
+                           role: gateway
+      else
+        Permission.create! ability: 1, resourceable_type: resource.name,
+                           role: gateway
+      end
+    end
+
     Apartment::Tenant.switch!()
   end
 

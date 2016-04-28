@@ -20,7 +20,7 @@ RSpec.describe Company, type: :model do
         Apartment::Tenant.switch!(
           company.subdomain
         )
-      }.to change(Role, :count).by(2)
+      }.to change(Role, :count).by(3)
       Apartment::Tenant.switch!()
     end
 

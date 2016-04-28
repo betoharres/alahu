@@ -22,10 +22,6 @@ module ControllerMacros
 
   def create_user_company
     before(:all) do
-      # UserCompany.delete_all
-      # Company.delete_all
-      # User.delete_all
-
       user_company = FactoryGirl.create(:user_company)
       @user = user_company.user
       @company = user_company.company

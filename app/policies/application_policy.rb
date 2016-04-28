@@ -6,7 +6,7 @@ class ApplicationPolicy
     @user = user
     @record = record
     unless user.role && user.role.authorizations
-      raise "User must have a role."
+      raise Pundit::NotAuthorizedError, "user must have a Role"
     end
     model_name = record.class.to_s.gsub(/::.+/, '') # when it's a collection
     @permissions = @user.role.authorizations
