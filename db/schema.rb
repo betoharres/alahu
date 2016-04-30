@@ -28,17 +28,7 @@ ActiveRecord::Schema.define(version: 20160427180702) do
     t.datetime "updated_at",                null: false
   end
 
-  create_table "gateway_roles", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
-    t.uuid     "gateway_id", null: false
-    t.uuid     "role_id",    null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  add_index "gateway_roles", ["gateway_id"], name: "index_gateway_roles_on_gateway_id", using: :btree
-  add_index "gateway_roles", ["role_id"], name: "index_gateway_roles_on_role_id", using: :btree
-
-  create_table "configs", force: :cascade do |t|
+  create_table "configs", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.string   "name"
     t.jsonb    "content",    default: {}, null: false
     t.datetime "created_at",              null: false
@@ -54,6 +44,16 @@ ActiveRecord::Schema.define(version: 20160427180702) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  create_table "gateway_roles", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
+    t.uuid     "gateway_id", null: false
+    t.uuid     "role_id",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "gateway_roles", ["gateway_id"], name: "index_gateway_roles_on_gateway_id", using: :btree
+  add_index "gateway_roles", ["role_id"], name: "index_gateway_roles_on_role_id", using: :btree
 
   create_table "gateways", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.boolean  "authorized",         default: false
