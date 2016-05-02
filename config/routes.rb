@@ -14,6 +14,7 @@ Rails.application.routes.draw do
       resources :firmwares
       resources :configs
       resources :nodes
+      resources :networks
       as :gateway do
         opt.resources :gateways
       end
