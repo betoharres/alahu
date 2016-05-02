@@ -40,6 +40,45 @@ RSpec.describe Company, type: :model do
       expect(@company.save).to be false
     end
 
+    it 'creates permissions to Admin Role' do
+      Apartment::Tenant.switch!(@company.subdomain)
+      permissions = Role.find_by(name: 'Admin').authorizations
+      expect(permissions.count).to be > 0
+    end
+
+    it 'creates permissions to Guest Role' do
+      Apartment::Tenant.switch!(@company.subdomain)
+      permissions = Role.find_by(name: 'Guest').authorizations
+      expect(permissions.count).to be > 0
+    end
+
+    it 'creates permissions to Gateway Role' do
+      Apartment::Tenant.switch!(@company.subdomain)
+      permissions = Role.find_by(name: 'Gateway').authorizations
+      expect(permissions.count).to be > 0
+    end
+
+    it 'Gateway Role has abilities lower than 7' do
+      Apartment::Tenant.switch!(@company.subdomain)
+      permissions = Role.find_by(name: 'Gateway').authorizations
+      ability_check = permissions.pluck(:ability).bsearch{|ability| ability > 7 }
+      expect(ability_check.nil?).to eq(true)
+    end
+
+    it 'Admin role has abilities equal 15' do
+      Apartment::Tenant.switch!(@company.subdomain)
+      permissions = Role.find_by(name: 'Admin').authorizations
+      ability_check = permissions.pluck(:ability).bsearch{|ability| ability < 15 }
+      expect(ability_check.nil?).to eq(true)
+    end
+
+    it 'Guest role has abilities equal 1' do
+      Apartment::Tenant.switch!(@company.subdomain)
+      permissions = Role.find_by(name: 'Guest').authorizations
+      ability_check = permissions.pluck(:ability).bsearch{|ability| ability > 1 }
+      expect(ability_check.nil?).to eq(true)
+    end
+
   end
 
     it 'drops the tenant' do

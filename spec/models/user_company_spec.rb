@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe UserCompany, type: :model do
+
   before :all do
     user_company = FactoryGirl.create(:user_company)
     @company = user_company.company
