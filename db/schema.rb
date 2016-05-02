@@ -119,9 +119,12 @@ ActiveRecord::Schema.define(version: 20160502195405) do
   create_table "nodes", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.citext    "name",                                                                              null: false
     t.geography "location",   limit: {:srid=>4326, :type=>"point", :has_z=>true, :geographic=>true}
+    t.uuid      "network_id"
     t.datetime  "created_at",                                                                        null: false
     t.datetime  "updated_at",                                                                        null: false
   end
+
+  add_index "nodes", ["network_id"], name: "index_nodes_on_network_id", using: :btree
 
   create_table "permissions", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.integer  "ability",           limit: 2, default: 0, null: false
@@ -197,6 +200,7 @@ ActiveRecord::Schema.define(version: 20160502195405) do
 
   add_foreign_key "gateway_roles", "gateways"
   add_foreign_key "gateway_roles", "roles"
+  add_foreign_key "nodes", "networks"
   add_foreign_key "permissions", "roles"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
