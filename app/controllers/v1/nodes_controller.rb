@@ -1,4 +1,5 @@
 class V1::NodesController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_node, only: [:show, :update, :destroy]
 
   # GET /nodes
