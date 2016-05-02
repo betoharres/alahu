@@ -4,7 +4,7 @@
 
 * System dependencies: Postgres, PostGIS, UUID, citext and unaccent postgres extensions
 
-* Database creation: `rake:db create && rake db:seed`
+* Database creation: `rake:db create && rake db:migrate && rake db:seed`
 
 * Database initialization: check the `CONSTRAINT` name in the `user_roles` table,
 and paste it in the `USER_ROLE_CONSTRAINT` constant located in the `company`
