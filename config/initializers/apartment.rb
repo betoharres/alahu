@@ -44,7 +44,7 @@ Apartment.configure do |config|
   # e.g when using a PostgreSQL extension like hstore.
   # Any schemas added here will be available along with your selected Tenant.
   #
-  config.persistent_schemas = %w{ shared_extensions postgis }
+  config.persistent_schemas = %w{ shared_extensions }
 
   # <== PostgreSQL only options
   #

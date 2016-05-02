@@ -14,11 +14,12 @@
 # Configure Using Gemfile
 # gem 'pg'
 #
+
 default: &default
-  adapter: postgresql
   encoding: unicode
   adapter: postgis
-  schema_search_path: "public,shared_extensions,postgis"
+  postgis_schema: "shared_extensions"
+  schema_search_path: "public,shared_extensions"
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
   pool: 5

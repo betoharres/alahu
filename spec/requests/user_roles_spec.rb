@@ -20,7 +20,7 @@ RSpec.describe "UserRoles", type: :request do
       'uid' => @auth_header['uid']
     }
   }
-  describe "GET /roles" do
+  describe "GET /user_roles" do
     it "works! (now write some real specs)" do
       get user_roles_path, {}, auth_request_header
       expect(response).to have_http_status(200)

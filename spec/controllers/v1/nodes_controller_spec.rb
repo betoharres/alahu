@@ -20,15 +20,22 @@ require 'rails_helper'
 
 RSpec.describe V1::NodesController, type: :controller do
 
+  create_user_company
+  login_user
+
+  before :all do
+    Apartment::Tenant.switch!(@company.subdomain)
+  end
+
   # This should return the minimal set of attributes required to create a valid
   # Node. As you add validations to Node, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {name: 'test', location: 'POINT (127.0 0.0 1)'}
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {name: nil}
   }
 
   # This should return the minimal set of values that should be in the session
@@ -52,21 +59,6 @@ RSpec.describe V1::NodesController, type: :controller do
     end
   end
 
-  describe "GET #new" do
-    it "assigns a new node as @node" do
-      get :new, {}, valid_session
-      expect(assigns(:node)).to be_a_new(Node)
-    end
-  end
-
-  describe "GET #edit" do
-    it "assigns the requested node as @node" do
-      node = Node.create! valid_attributes
-      get :edit, {:id => node.to_param}, valid_session
-      expect(assigns(:node)).to eq(node)
-    end
-  end
-
   describe "POST #create" do
     context "with valid params" do
       it "creates a new Node" do
@@ -80,11 +72,6 @@ RSpec.describe V1::NodesController, type: :controller do
         expect(assigns(:node)).to be_a(Node)
         expect(assigns(:node)).to be_persisted
       end
-
-      it "redirects to the created node" do
-        post :create, {:node => valid_attributes}, valid_session
-        expect(response).to redirect_to(Node.last)
-      end
     end
 
     context "with invalid params" do
@@ -92,37 +79,26 @@ RSpec.describe V1::NodesController, type: :controller do
         post :create, {:node => invalid_attributes}, valid_session
         expect(assigns(:node)).to be_a_new(Node)
       end
-
-      it "re-renders the 'new' template" do
-        post :create, {:node => invalid_attributes}, valid_session
-        expect(response).to render_template("new")
-      end
     end
   end
 
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {name: 'newName'}
       }
 
       it "updates the requested node" do
         node = Node.create! valid_attributes
         put :update, {:id => node.to_param, :node => new_attributes}, valid_session
         node.reload
-        skip("Add assertions for updated state")
+        expect(node.name).to eq(new_attributes[:name])
       end
 
       it "assigns the requested node as @node" do
         node = Node.create! valid_attributes
         put :update, {:id => node.to_param, :node => valid_attributes}, valid_session
         expect(assigns(:node)).to eq(node)
-      end
-
-      it "redirects to the node" do
-        node = Node.create! valid_attributes
-        put :update, {:id => node.to_param, :node => valid_attributes}, valid_session
-        expect(response).to redirect_to(node)
       end
     end
 
@@ -131,12 +107,6 @@ RSpec.describe V1::NodesController, type: :controller do
         node = Node.create! valid_attributes
         put :update, {:id => node.to_param, :node => invalid_attributes}, valid_session
         expect(assigns(:node)).to eq(node)
-      end
-
-      it "re-renders the 'edit' template" do
-        node = Node.create! valid_attributes
-        put :update, {:id => node.to_param, :node => invalid_attributes}, valid_session
-        expect(response).to render_template("edit")
       end
     end
   end
@@ -149,11 +119,6 @@ RSpec.describe V1::NodesController, type: :controller do
       }.to change(Node, :count).by(-1)
     end
 
-    it "redirects to the nodes list" do
-      node = Node.create! valid_attributes
-      delete :destroy, {:id => node.to_param}, valid_session
-      expect(response).to redirect_to(nodes_url)
-    end
   end
 
 end
