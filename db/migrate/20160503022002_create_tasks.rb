@@ -3,7 +3,7 @@ class CreateTasks < ActiveRecord::Migration
     create_table :tasks, id: :uuid, default: 'gen_random_uuid()' do |t|
       t.datetime :execute_at, null: false
       t.integer :code, limit: 2
-      t.string :state, default: 'waiting'
+      t.integer :status, default: 0
       t.string :description
       t.references :node, index: true, foreign_key: true, type: :uuid
       t.references :attachable, polymorphic: true, index: true, type: :uuid

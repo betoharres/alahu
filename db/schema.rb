@@ -156,15 +156,15 @@ ActiveRecord::Schema.define(version: 20160503022002) do
   end
 
   create_table "tasks", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
-    t.datetime "execute_at",                                    null: false
+    t.datetime "execute_at",                            null: false
     t.integer  "code",            limit: 2
-    t.string   "state",                     default: "waiting"
+    t.integer  "status",                    default: 0
     t.string   "description"
     t.uuid     "node_id"
     t.uuid     "attachable_id"
     t.string   "attachable_type"
-    t.datetime "created_at",                                    null: false
-    t.datetime "updated_at",                                    null: false
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
   end
 
   add_index "tasks", ["attachable_type", "attachable_id"], name: "index_tasks_on_attachable_type_and_attachable_id", using: :btree
