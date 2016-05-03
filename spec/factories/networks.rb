@@ -1,5 +1,5 @@
 FactoryGirl.define do
   factory :network do
-    name ""
+    name "MyString"
   end
 end

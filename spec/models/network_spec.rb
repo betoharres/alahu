@@ -1,5 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe Network, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  before :all do
+    @network = FactoryGirl.create(:network)
+  end
+
+  it "requires presence of network's name" do
+    @network.name = nil
+    expect(@network.save).to be false
+  end
 end

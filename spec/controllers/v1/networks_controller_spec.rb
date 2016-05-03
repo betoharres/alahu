@@ -20,6 +20,9 @@ require 'rails_helper'
 
 RSpec.describe V1::NetworksController, type: :controller do
 
+  create_user_company
+  login_user
+
   # This should return the minimal set of attributes required to create a valid
   # Network. As you add validations to Network, be sure to
   # adjust the attributes here as well.
