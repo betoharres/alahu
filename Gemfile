@@ -11,6 +11,7 @@ gem 'omniauth'
 gem 'pry-rails'
 gem 'activerecord-postgis-adapter'
 gem 'pundit'
+gem 'aasm'
 
 group :development, :test do
   gem 'rspec-rails', '~> 3.0'
