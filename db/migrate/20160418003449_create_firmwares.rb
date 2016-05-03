@@ -1,8 +1,8 @@
 class CreateFirmwares < ActiveRecord::Migration
   def change
     create_table :firmwares, id: :uuid, default: 'gen_random_uuid()' do |t|
-      t.string :name
-      t.string :path
+      t.citext :name, null: false, unique: true, index: true
+      t.citext :path, null: false, unique: true, index: true
 
       t.timestamps null: false
     end

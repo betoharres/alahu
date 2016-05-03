@@ -1,7 +1,7 @@
 class CreateLampStats < ActiveRecord::Migration
   def change
     create_table :lamp_stats, id: :uuid, default: 'gen_random_uuid()' do |t|
-      t.integer :serial_number,  limit: 8, index: true, null: false
+      t.integer :serial_number,  limit: 8, index: true, null: false, unique: true
       t.integer :sentPkts,       limit: 8
       t.integer :rcvPkts,        limit: 8
       t.integer :lastReboot,     limit: 8

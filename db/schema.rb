@@ -22,14 +22,14 @@ ActiveRecord::Schema.define(version: 20160503022002) do
 
   create_table "companies", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.string   "name",                      null: false
-    t.string   "subdomain",                 null: false
+    t.citext   "subdomain",                 null: false
     t.boolean  "public",     default: true
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
   end
 
   create_table "configs", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
-    t.string   "name"
+    t.citext   "name"
     t.jsonb    "content",    default: {}, null: false
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
@@ -39,11 +39,14 @@ ActiveRecord::Schema.define(version: 20160503022002) do
   add_index "configs", ["name"], name: "index_configs_on_name", using: :btree
 
   create_table "firmwares", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
-    t.string   "name"
-    t.string   "path"
+    t.citext   "name",       null: false
+    t.citext   "path",       null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_index "firmwares", ["name"], name: "index_firmwares_on_name", using: :btree
+  add_index "firmwares", ["path"], name: "index_firmwares_on_path", using: :btree
 
   create_table "gateway_roles", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.uuid     "gateway_id", null: false
@@ -116,6 +119,8 @@ ActiveRecord::Schema.define(version: 20160503022002) do
     t.datetime "updated_at", null: false
   end
 
+  add_index "networks", ["name"], name: "index_networks_on_name", using: :btree
+
   create_table "nodes", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.citext    "name",                                                                              null: false
     t.geography "location",   limit: {:srid=>4326, :type=>"point", :has_z=>true, :geographic=>true}
@@ -124,6 +129,8 @@ ActiveRecord::Schema.define(version: 20160503022002) do
     t.datetime  "updated_at",                                                                        null: false
   end
 
+  add_index "nodes", ["location"], name: "index_nodes_on_location", using: :gist
+  add_index "nodes", ["name"], name: "index_nodes_on_name", using: :btree
   add_index "nodes", ["network_id"], name: "index_nodes_on_network_id", using: :btree
 
   create_table "permissions", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
@@ -139,7 +146,7 @@ ActiveRecord::Schema.define(version: 20160503022002) do
   add_index "permissions", ["role_id"], name: "index_permissions_on_role_id", using: :btree
 
   create_table "resources", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
-    t.citext "name"
+    t.citext "name", null: false
   end
 
   create_table "roles", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
