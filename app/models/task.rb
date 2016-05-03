@@ -18,17 +18,17 @@ class Task < ActiveRecord::Base
     state :running
     state :failed
     state :successed
-  end
 
-  event :run do
-    transitions from: :waiting, to: :running, guard: :waiting?
-  end
+    event :run do
+      transitions from: :waiting, to: :running
+    end
 
-  event :fail do
-    transitions from: :running, to: :failed, guard: :running?
-  end
+    event :fail do
+      transitions from: :running, to: :failed
+    end
 
-  event :completed do
-    transitions from: :running, to: :successed, guard: :running?
+    event :completed do
+      transitions from: :running, to: :successed
+    end
   end
 end
