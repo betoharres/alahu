@@ -27,11 +27,11 @@ RSpec.describe V1::TasksController, type: :controller do
   # Task. As you add validations to Task, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    {execute_at: DateTime.now}
+    {execute_at: DateTime.now, code: 100}
   }
 
   let(:invalid_attributes) {
-    {execute_at: false}
+    {execute_at: nil, code: nil}
   }
 
   # This should return the minimal set of values that should be in the session
