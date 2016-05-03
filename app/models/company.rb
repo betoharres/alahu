@@ -1,6 +1,7 @@
 class Company < ActiveRecord::Base
   has_many :users_companies, dependent: :destroy
   has_many :users, through: :users_companies
+  has_many :permissions, as: :resourceable, dependent: :destroy
 
   before_save :subdomain_to_downcase
   after_create :create_tenant, :delete_constraint, :create_roles
