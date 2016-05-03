@@ -1,7 +1,7 @@
 class Gateway < ActiveRecord::Base
   has_one :gateway_role, dependent: :destroy
   has_one :role, through: :gateway_role
-  has_one :permission, as: :resourceable, dependent: :destroy
+  has_many :permission, as: :resourceable, dependent: :destroy
 
   # Include default devise modules.
    devise :database_authenticatable,

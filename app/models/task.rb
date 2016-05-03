@@ -14,13 +14,13 @@ class Task < ActiveRecord::Base
   }
 
   aasm column: :status, enum: true do
-    state :waiting, :initial => true
+    state :waiting, initial: true
     state :running
     state :failed
-    state :successed
+    state :done
 
     event :run do
-      transitions from: :waiting, to: :running
+      transitions :from => :waiting, :to =>:running
     end
 
     event :fail do
@@ -28,7 +28,8 @@ class Task < ActiveRecord::Base
     end
 
     event :completed do
-      transitions from: :running, to: :successed
+      transitions from: :running, to: :done
     end
   end
+
 end
