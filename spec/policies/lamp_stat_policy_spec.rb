@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe LampStatPolicy, type: :policy do
 
-  create_not_authorized_user
+  create_guest_user
 
   before :all do
     Apartment::Tenant.switch!(@company.subdomain)

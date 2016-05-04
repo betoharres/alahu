@@ -1,5 +1,5 @@
 module PolicyMacros
-  def create_not_authorized_user
+  def create_guest_user
     before :all do
       user_company = FactoryGirl.create(:user_company)
       @company = user_company.company
