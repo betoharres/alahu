@@ -1,5 +1,5 @@
 class V1::FirmwaresController < ApplicationController
-  before_action :set_firmware, only: [:show, :update, :destroy]
+  before_action :set_firmware, only: [:update, :destroy]
   devise_token_auth_group :member, contains: [:user, :gateway]
   before_action :authenticate_member!, only: [:show]
   before_action :authenticate_user!, except: [:show]
@@ -8,6 +8,7 @@ class V1::FirmwaresController < ApplicationController
   # GET /firmwares.json
   def index
     @firmwares = Firmware.all
+    authorize @firmwares
 
     render json: @firmwares
   end
@@ -15,6 +16,8 @@ class V1::FirmwaresController < ApplicationController
   # GET /firmwares/1
   # GET /firmwares/1.json
   def show
+    @firmware = Firmware.find(params[:id])
+    FirmwarePolicy::Scope.new(current_member, Firmware).resolve
     render json: @firmware
   end
 
@@ -22,6 +25,7 @@ class V1::FirmwaresController < ApplicationController
   # POST /firmwares.json
   def create
     @firmware = Firmware.new(firmware_params)
+    authorize @firmware
 
     if @firmware.save
       render json: @firmware, status: :created, location: @firmware
@@ -33,8 +37,6 @@ class V1::FirmwaresController < ApplicationController
   # PATCH/PUT /firmwares/1
   # PATCH/PUT /firmwares/1.json
   def update
-    @firmware = Firmware.find(params[:id])
-
     if @firmware.update(firmware_params)
       head :no_content
     else
@@ -54,6 +56,7 @@ class V1::FirmwaresController < ApplicationController
 
     def set_firmware
       @firmware = Firmware.find(params[:id])
+      authorize @firmware
     end
 
     def firmware_params

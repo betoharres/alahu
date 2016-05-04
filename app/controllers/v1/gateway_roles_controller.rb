@@ -6,6 +6,7 @@ class V1::GatewayRolesController < ApplicationController
   # GET /gateway_roles.json
   def index
     @gateway_roles = GatewayRole.all
+    authorize @gateway_roles
 
     render json: @gateway_roles
   end
@@ -20,6 +21,7 @@ class V1::GatewayRolesController < ApplicationController
   # POST /gateway_roles.json
   def create
     @gateway_role = GatewayRole.new(gateway_role_params)
+    authorize @gateway_role
 
     if @gateway_role.save
       render json: @gateway_role, status: :created, location: @gateway_role
@@ -31,8 +33,6 @@ class V1::GatewayRolesController < ApplicationController
   # PATCH/PUT /gateway_roles/1
   # PATCH/PUT /gateway_roles/1.json
   def update
-    @gateway_role = GatewayRole.find(params[:id])
-
     if @gateway_role.update(gateway_role_params)
       head :no_content
     else
@@ -52,6 +52,7 @@ class V1::GatewayRolesController < ApplicationController
 
     def set_gateway_role
       @gateway_role = GatewayRole.find(params[:id])
+      authorize @gateway_role
     end
 
     def gateway_role_params

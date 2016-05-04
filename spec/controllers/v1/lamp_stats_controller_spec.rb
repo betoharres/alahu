@@ -74,10 +74,21 @@ RSpec.describe V1::LampStatsController, type: :controller do
     end
 
     context "with valid params" do
+
       it "creates a new LampStat" do
         expect {
           post :create, {format: :json, :lamp_stat => valid_attributes}, valid_session
         }.to change(LampStat, :count).by(1)
+      end
+
+      it "tries to create a new LampStat with invalid credentials" do
+        request.headers['accept'] = nil
+        request.headers['access-token'] = nil
+        request.headers['client'] = nil
+        request.headers['uid'] = nil
+        expect {
+          post :create, {format: :json, :lamp_stat => valid_attributes}, valid_session
+        }.to change(LampStat, :count).by(0)
       end
 
       it "assigns a newly created lamp_stat as @lamp_stat" do

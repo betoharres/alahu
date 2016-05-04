@@ -1,5 +1,5 @@
 class V1::ConfigsController < ApplicationController
-  before_action :set_config, only: [:show, :update, :destroy]
+  before_action :set_config, only: [:update, :destroy]
   devise_token_auth_group :member, contains: [:user, :gateway]
   before_action :authenticate_member!, only: [:show]
   before_action :authenticate_user!, except: [:show]
@@ -8,6 +8,7 @@ class V1::ConfigsController < ApplicationController
   # GET /configs.json
   def index
     @configs = Config.all
+    authorize @configs
 
     render json: @configs
   end
@@ -15,6 +16,8 @@ class V1::ConfigsController < ApplicationController
   # GET /configs/1
   # GET /configs/1.json
   def show
+    @config = Config.find(params[:id])
+    ConfigPolicy::Scope.new(current_member, Config).resolve
     render json: @config
   end
 
@@ -22,6 +25,7 @@ class V1::ConfigsController < ApplicationController
   # POST /configs.json
   def create
     @config = Config.new(config_params)
+    authorize @config
 
     if @config.save
       render json: @config, status: :created, location: @config
@@ -33,8 +37,6 @@ class V1::ConfigsController < ApplicationController
   # PATCH/PUT /configs/1
   # PATCH/PUT /configs/1.json
   def update
-    @config = Config.find(params[:id])
-
     if @config.update(config_params)
       head :no_content
     else
@@ -54,6 +56,7 @@ class V1::ConfigsController < ApplicationController
 
     def set_config
       @config = Config.find(params[:id])
+      authorize @config
     end
 
     def config_params

@@ -3,7 +3,7 @@ require 'rails_helper'
 RSpec.describe "GatewayRoles", type: :request do
   before :all do
     @user = FactoryGirl.create(:user_role).user
-    Permission.create resourceable_type: 'Permission', ability: 15, role: @user.role
+    Permission.create resourceable_type: 'GatewayRole', ability: 15, role: @user.role
   end
 
   before :each do

@@ -15,7 +15,6 @@ class V1::PermissionsController < ApplicationController
   # GET /permissions/1
   # GET /permissions/1.json
   def show
-    authorize @permission
     render json: @permission
   end
 
@@ -35,8 +34,6 @@ class V1::PermissionsController < ApplicationController
   # PATCH/PUT /permissions/1
   # PATCH/PUT /permissions/1.json
   def update
-    authorize @permission
-
     if @permission.update(permission_params)
       head :no_content
     else
@@ -47,7 +44,6 @@ class V1::PermissionsController < ApplicationController
   # DELETE /permissions/1
   # DELETE /permissions/1.json
   def destroy
-    authorize @permission
     @permission.destroy
 
     head :no_content
@@ -57,6 +53,7 @@ class V1::PermissionsController < ApplicationController
 
     def set_permission
       @permission = Permission.find(params[:id])
+      authorize @permission
     end
 
     def permission_params

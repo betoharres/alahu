@@ -6,6 +6,7 @@ class V1::NetworksController < ApplicationController
   # GET /networks.json
   def index
     @networks = Network.all
+    authorize @networks
 
     render json: @networks
   end
@@ -20,6 +21,7 @@ class V1::NetworksController < ApplicationController
   # POST /networks.json
   def create
     @network = Network.new(network_params)
+    authorize @network
 
     if @network.save
       render json: @network, status: :created, location: @network
@@ -31,8 +33,6 @@ class V1::NetworksController < ApplicationController
   # PATCH/PUT /networks/1
   # PATCH/PUT /networks/1.json
   def update
-    @network = Network.find(params[:id])
-
     if @network.update(network_params)
       head :no_content
     else
@@ -52,6 +52,7 @@ class V1::NetworksController < ApplicationController
 
     def set_network
       @network = Network.find(params[:id])
+      authorize @network
     end
 
     def network_params

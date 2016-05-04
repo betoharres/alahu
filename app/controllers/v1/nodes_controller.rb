@@ -6,6 +6,7 @@ class V1::NodesController < ApplicationController
   # GET /nodes.json
   def index
     @nodes = Node.all
+    authorize @nodes
 
     render json: @nodes
   end
@@ -20,6 +21,7 @@ class V1::NodesController < ApplicationController
   # POST /nodes.json
   def create
     @node = Node.new(node_params)
+    authorize @node
 
     if @node.save
       render json: @node, status: :created, location: @node
@@ -31,8 +33,6 @@ class V1::NodesController < ApplicationController
   # PATCH/PUT /nodes/1
   # PATCH/PUT /nodes/1.json
   def update
-    @node = Node.find(params[:id])
-
     if @node.update(node_params)
       head :no_content
     else
@@ -52,6 +52,7 @@ class V1::NodesController < ApplicationController
 
     def set_node
       @node = Node.find(params[:id])
+      authorize @node
     end
 
     def node_params

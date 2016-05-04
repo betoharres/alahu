@@ -15,7 +15,6 @@ class V1::GatewaysController < ApplicationController
   # GET /gateways/1
   # GET /gateways/1.json
   def show
-    authorize @gateway
     render json: @gateway
   end
 
@@ -35,9 +34,6 @@ class V1::GatewaysController < ApplicationController
   # PATCH/PUT /gateways/1
   # PATCH/PUT /gateways/1.json
   def update
-    @gateway = Gateway.find(params[:id])
-    authorize @gateway
-
     if @gateway.update(gateway_params)
       head :no_content
     else
@@ -48,7 +44,6 @@ class V1::GatewaysController < ApplicationController
   # DELETE /gateways/1
   # DELETE /gateways/1.json
   def destroy
-    authorize @gateway
     @gateway.destroy
 
     head :no_content
@@ -58,6 +53,7 @@ class V1::GatewaysController < ApplicationController
 
     def set_gateway
       @gateway = Gateway.find(params[:id])
+      authorize @gateway
     end
 
     def gateway_params

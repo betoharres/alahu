@@ -6,6 +6,7 @@ class V1::UserRolesController < ApplicationController
   # GET /user_roles.json
   def index
     @user_roles = UserRole.all
+    authorize @user_roles
 
     render json: @user_roles
   end
@@ -20,6 +21,7 @@ class V1::UserRolesController < ApplicationController
   # POST /user_roles.json
   def create
     @user_role = UserRole.new(user_role_params)
+    authorize @user_role
 
     if @user_role.save
       render json: @user_role, status: :created, location: @user_role
@@ -31,8 +33,6 @@ class V1::UserRolesController < ApplicationController
   # PATCH/PUT /user_roles/1
   # PATCH/PUT /user_roles/1.json
   def update
-    @user_role = UserRole.find(params[:id])
-
     if @user_role.update(user_role_params)
       head :no_content
     else
@@ -52,6 +52,7 @@ class V1::UserRolesController < ApplicationController
 
     def set_user_role
       @user_role = UserRole.find(params[:id])
+      authorize @user_role
     end
 
     def user_role_params

@@ -15,7 +15,6 @@ class V1::LampStatsController < ApplicationController
   # GET /lamp_stats/1
   # GET /lamp_stats/1.json
   def show
-    authorize @lamp_stat
     render json: @lamp_stat
   end
 
@@ -23,6 +22,7 @@ class V1::LampStatsController < ApplicationController
   # POST /lamp_stats.json
   def create
     @lamp_stat = LampStat.new(lamp_stat_params)
+    LampStatPolicy::Scope.new(current_gateway, LampStat).resolve
 
     if @lamp_stat.save
       render json: @lamp_stat, status: :created, location: @lamp_stat
@@ -34,9 +34,6 @@ class V1::LampStatsController < ApplicationController
   # PATCH/PUT /lamp_stats/1
   # PATCH/PUT /lamp_stats/1.json
   def update
-    @lamp_stat = LampStat.find(params[:id])
-    authorize @lamp_stat
-
     if @lamp_stat.update(lamp_stat_params)
       head :no_content
     else
@@ -47,7 +44,6 @@ class V1::LampStatsController < ApplicationController
   # DELETE /lamp_stats/1
   # DELETE /lamp_stats/1.json
   def destroy
-    authorize @lamp_stat
     @lamp_stat.destroy
 
     head :no_content
@@ -57,6 +53,7 @@ class V1::LampStatsController < ApplicationController
 
     def set_lamp_stat
       @lamp_stat = LampStat.find(params[:id])
+      authorize @lamp_stat
     end
 
     def lamp_stat_params

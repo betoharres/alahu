@@ -15,7 +15,6 @@ class V1::RolesController < ApplicationController
   # GET /roles/1
   # GET /roles/1.json
   def show
-    authorize @role
     render json: @role
   end
 
@@ -26,8 +25,6 @@ class V1::RolesController < ApplicationController
     authorize @role
 
     if @role.save
-      # TODO: create a controller to handle User x Role assignment
-      # UserRole.create user: current_user, role: @role
       render json: @role, status: :created, location: @role
     else
       render json: @role.errors, status: :unprocessable_entity
@@ -37,7 +34,6 @@ class V1::RolesController < ApplicationController
   # PATCH/PUT /roles/1
   # PATCH/PUT /roles/1.json
   def update
-    authorize @role
     if @role.update(role_params)
       head :no_content
     else
@@ -48,7 +44,6 @@ class V1::RolesController < ApplicationController
   # DELETE /roles/1
   # DELETE /roles/1.json
   def destroy
-    authorize @role
     @role.destroy
 
     head :no_content
@@ -58,6 +53,7 @@ class V1::RolesController < ApplicationController
 
     def set_role
       @role = Role.find(params[:id])
+      authorize @role
     end
 
     def role_params
