@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160503022002) do
+ActiveRecord::Schema.define(version: 20160504183004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -19,6 +19,16 @@ ActiveRecord::Schema.define(version: 20160503022002) do
   enable_extension "unaccent"
   enable_extension "citext"
   enable_extension "pgcrypto"
+
+  create_table "alarms", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
+    t.integer  "code",        limit: 2, null: false
+    t.citext   "name",                  null: false
+    t.string   "description"
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+  end
+
+  add_index "alarms", ["name"], name: "index_alarms_on_name", using: :btree
 
   create_table "companies", id: :uuid, default: "gen_random_uuid()", force: :cascade do |t|
     t.string   "name",                      null: false

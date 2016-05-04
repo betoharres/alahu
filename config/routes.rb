@@ -9,13 +9,14 @@ Rails.application.routes.draw do
       opt.resources :companies
       opt.resources :roles
       opt.resources :permissions
-      resources :gateway_roles
-      resources :user_roles
-      resources :firmwares
-      resources :configs
-      resources :nodes
-      resources :networks
-      resources :tasks
+      opt.resources :gateway_roles
+      opt.resources :user_roles
+      opt.resources :firmwares
+      opt.resources :configs
+      opt.resources :nodes
+      opt.resources :networks
+      opt.resources :tasks
+      opt.resources :alarms
       as :gateway do
         opt.resources :gateways
       end
