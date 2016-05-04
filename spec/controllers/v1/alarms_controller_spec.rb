@@ -92,6 +92,7 @@ RSpec.describe V1::AlarmsController, type: :controller do
         alarm = Alarm.create! valid_attributes
         put :update, {:id => alarm.to_param, :alarm => new_attributes}, valid_session
         alarm.reload
+        expect(alarm.name).to eq(new_attributes[:name])
       end
 
       it "assigns the requested alarm as @alarm" do
