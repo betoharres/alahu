@@ -1,10 +1,12 @@
 class V1::AlarmsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_alarm, only: [:show, :update, :destroy]
 
   # GET /alarms
   # GET /alarms.json
   def index
     @alarms = Alarm.all
+    authorize @alarms
 
     render json: @alarms
   end
@@ -19,6 +21,7 @@ class V1::AlarmsController < ApplicationController
   # POST /alarms.json
   def create
     @alarm = Alarm.new(alarm_params)
+    authorize @alarm
 
     if @alarm.save
       render json: @alarm, status: :created, location: @alarm
@@ -30,8 +33,6 @@ class V1::AlarmsController < ApplicationController
   # PATCH/PUT /alarms/1
   # PATCH/PUT /alarms/1.json
   def update
-    @alarm = Alarm.find(params[:id])
-
     if @alarm.update(alarm_params)
       head :no_content
     else
@@ -51,6 +52,7 @@ class V1::AlarmsController < ApplicationController
 
     def set_alarm
       @alarm = Alarm.find(params[:id])
+      authorize @alarm
     end
 
     def alarm_params
