@@ -16,6 +16,7 @@ WORKDIR $APP_HOME
 # copy over Gemfile and install bundle
 # WORKDIR /tmp
 ADD Gemfile* $APP_HOME/
+RUN gem install i18n
 RUN bundle install --jobs=4
 
 # copy over remaining app files
